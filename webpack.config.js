@@ -7,16 +7,13 @@ const VENDOR_LIBS = [
   'react',
   'react-dom',
   'semantic-ui-css',
-  'semantic-ui-react'
+  'semantic-ui-react',
+  'jquery'
 ];
 
 module.exports = {
   entry: {
-    bundle: [
-      'babel-polyfill',
-      'webpack-hot-middleware/client',
-      './src/index.js'
-    ],
+    bundle: ['babel-polyfill', './src/index.js'],
     [VENDOR]: VENDOR_LIBS
   },
   output: {
@@ -33,6 +30,19 @@ module.exports = {
       {
         use: ['style-loader', 'css-loader'],
         test: /\.css$/
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {}
+          }
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000'
       }
     ]
   },
@@ -43,6 +53,10 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './index.html'
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
     })
     // new webpack.DefinePlugin({
     //   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
