@@ -45,7 +45,6 @@ class Todos extends Component {
     });
   }
   onDeleteClick(id) {
-    console.log(id);
     this.setState({ todos: this.state.todos.filter(todo => todo.id !== id) });
   }
 
@@ -151,7 +150,6 @@ class Todos extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div>
         <Menu inverted>
