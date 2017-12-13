@@ -19,3 +19,11 @@ npm run serve
 ```
 
 and visit http://localhost:8080
+
+## Usage
+
+Create todo list & switch finished / unfinished
+![Alt text](/docs/gifs/1.gif)
+
+Edit todo
+![Alt text](/docs/gifs/2.gif)

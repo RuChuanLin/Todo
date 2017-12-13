@@ -41,7 +41,8 @@ class Todos extends Component {
       .toString(36)
       .slice(-12);
     this.setState({
-      todos: [new Todo(id, this.state.formValue, false), ...this.state.todos]
+      todos: [new Todo(id, this.state.formValue, false), ...this.state.todos],
+      formValue: ''
     });
   }
   onDeleteClick(id) {
