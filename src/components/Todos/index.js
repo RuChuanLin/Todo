@@ -1,5 +1,18 @@
 import React, { Component } from 'react';
+import {
+  Menu,
+  Form,
+  Checkbox,
+  Button,
+  Input,
+  Grid,
+  List,
+  Icon,
+  Header
+} from 'semantic-ui-react';
+
 import { FILTER } from './constants';
+
 class Todo {
   constructor(id, content, isDone) {
     this.id = id;
@@ -77,30 +90,62 @@ class Todos extends Component {
       })
       .map(({ id, content, isDone }) => {
         return (
-          <li key={id}>
+          <List.Item key={id}>
             {id === this.state.isEditing ? (
-              <form onSubmit={this.onTodoContentSubmit(id, isDone)}>
-                <input
+              <Form onSubmit={this.onTodoContentSubmit(id, isDone)}>
+                <Input
+                  fluid
                   value={this.state.editingTodoValue}
                   onChange={e => this.onTodoContentChange(e.target.value)}
                 />
-              </form>
+              </Form>
             ) : (
-              <div>
-                <span onClick={() => this.onTodoToggleDone(id)}>
-                  {isDone ? '已完成' : '未完成'} {content}
-                </span>
-                <button
-                  onClick={() =>
-                    this.setState({ isEditing: id, editingTodoValue: content })
-                  }
+              <Grid>
+                <Grid.Column
+                  computer={11}
+                  onClick={() => this.onTodoToggleDone(id)}
+                  style={isDone ? { color: 'green' } : { color: 'DarkOrange' }}
                 >
-                  Edit
-                </button>
-                <button onClick={() => this.onDeleteClick(id)}>Delete</button>
-              </div>
+                  <div style={{ display: 'inline-block' }}>
+                    {isDone ? (
+                      <Icon name="check circle" size="big" />
+                    ) : (
+                      <Icon name="radio" size="big" />
+                    )}{' '}
+                  </div>
+                  <label
+                    style={{
+                      'word-break': 'break-all',
+                      display: 'inline-block'
+                    }}
+                  >
+                    {content}
+                  </label>
+                </Grid.Column>
+                <Grid.Column computer={5}>
+                  <Button
+                    color="red"
+                    floated="right"
+                    onClick={() => this.onDeleteClick(id)}
+                  >
+                    <Icon name="delete" /> 刪除
+                  </Button>
+                  <Button
+                    color="blue"
+                    floated="right"
+                    onClick={() =>
+                      this.setState({
+                        isEditing: id,
+                        editingTodoValue: content
+                      })
+                    }
+                  >
+                    <Icon name="edit" /> 編輯
+                  </Button>
+                </Grid.Column>
+              </Grid>
             )}
-          </li>
+          </List.Item>
         );
       });
   }
@@ -109,35 +154,66 @@ class Todos extends Component {
     console.log(this.state);
     return (
       <div>
-        <form onSubmit={this.onFormSubmit.bind(this)}>
-          <input
-            value={this.state.formValue}
-            onChange={e => this.onInputChange(e.target.value)}
-          />
-        </form>
-        <div>
-          <button onClick={() => this.setState({ filter: FILTER.ALL })}>
-            顯示全部Todos
-          </button>
-          <button onClick={() => this.setState({ filter: FILTER.DONE })}>
-            顯示已完成Todos
-          </button>
-          <button onClick={() => this.setState({ filter: FILTER.UNDONE })}>
-            顯示未完成Todos
-          </button>
-          <button
-            onClick={() =>
-              this.setState({
-                todos: this.state.todos.filter(({ isDone }) => !isDone)
-              })
-            }
-          >
-            清除已完成Todos
-          </button>
-        </div>
-        <ul>{this.renderList()}</ul>
-        {/* <SubmitForm />
-        <TodoList /> */}
+        <Menu inverted>
+          <Menu.Item>
+            <Form onSubmit={this.onFormSubmit.bind(this)}>
+              <Form.Field>
+                <Input
+                  placeholder="Please enter todo list"
+                  value={this.state.formValue}
+                  onChange={e => this.onInputChange(e.target.value)}
+                />
+              </Form.Field>
+            </Form>
+          </Menu.Item>
+        </Menu>
+        <Grid>
+          <Grid>
+            <Grid.Column mobile={16} tablet={4} computer={4}>
+              <Button
+                color="black"
+                onClick={() => this.setState({ filter: FILTER.ALL })}
+              >
+                <Icon name="tasks" size="big" />
+                顯示全部Todos
+              </Button>
+            </Grid.Column>
+            <Grid.Column mobile={16} tablet={4} computer={4}>
+              <Button
+                color="green"
+                onClick={() => this.setState({ filter: FILTER.DONE })}
+              >
+                <Icon name="check circle" size="big" />
+                顯示已完成Todos
+              </Button>
+            </Grid.Column>
+            <Grid.Column mobile={16} tablet={4} computer={4}>
+              <Button
+                color="orange"
+                onClick={() => this.setState({ filter: FILTER.UNDONE })}
+              >
+                <Icon name="radio" size="big" />
+                顯示未完成Todos
+              </Button>
+            </Grid.Column>
+            <Grid.Column mobile={16} tablet={4} computer={4}>
+              <Button
+                color="red"
+                onClick={() =>
+                  this.setState({
+                    todos: this.state.todos.filter(({ isDone }) => !isDone)
+                  })
+                }
+              >
+                <Icon name="remove user" size="big" />
+                清除已完成Todos
+              </Button>
+            </Grid.Column>
+          </Grid>
+          <Grid.Column computer={9}>
+            <List>{this.renderList()}</List>
+          </Grid.Column>
+        </Grid>
       </div>
     );
   }
